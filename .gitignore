@@ -5,6 +5,7 @@ build/
 *.xcodeproj/xcuserdata/
 *.ipa
 *.xcarchive
+release/
 .env
 NEXUS/Secrets.plist
 __pycache__/
