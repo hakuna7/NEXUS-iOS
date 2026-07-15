@@ -7,7 +7,7 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section("AI 模型") {
+            Section {
                 TextField("接口地址", text: $state.settings.endpoint)
                     .textInputAutocapitalization(.never)
                     .keyboardType(.URL)
@@ -29,6 +29,8 @@ struct SettingsView: View {
                     }
                     .buttonStyle(.plain)
                 }
+            } header: {
+                Text("AI 模型")
             } footer: {
                 Text("密钥仅保存在本机钥匙串，不会写入屏幕记忆或公开仓库。")
             }

@@ -42,8 +42,8 @@ final class RemoteClient: ObservableObject {
         connection.start(queue: .global(qos: .userInteractive))
         udpConnection = connection
         motion.deviceMotionUpdateInterval = 1.0 / 30.0
-        motion.startDeviceMotionUpdates(to: .main) { [weak self] sample, _ in
-            guard let self, let sample else { return }
+        motion.startDeviceMotionUpdates(to: .main) { sample, _ in
+            guard let sample else { return }
             let payload: [String: Any] = [
                 "token": token,
                 "dx": sample.rotationRate.y * 10,
