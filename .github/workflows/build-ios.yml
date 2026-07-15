@@ -1,0 +1,53 @@
+name: Build iOS IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        run: xcodegen generate
+      - name: Build unsigned app
+        run: |
+          xcodebuild \
+            -project NEXUS.xcodeproj \
+            -scheme NEXUS \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build
+      - name: Package IPA
+        run: |
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/NEXUS.app Payload/
+          ditto -c -k --sequesterRsrc --keepParent Payload NEXUS-unsigned.ipa
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NEXUS-iOS-unsigned
+          path: NEXUS-unsigned.ipa
+
+  windows-companion:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build Windows companion
+        shell: pwsh
+        run: |
+          pip install -r WindowsCompanion/requirements.txt
+          pyinstaller --noconfirm --onefile --windowed --name NEXUS-Windows-Bridge WindowsCompanion/nexus_companion.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NEXUS-Windows-Bridge
+          path: dist/NEXUS-Windows-Bridge.exe
