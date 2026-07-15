@@ -25,6 +25,8 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.hakuna7.NEXUS
         PRODUCT_NAME: NEXUS
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: NEXUS/Info.plist
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
@@ -44,6 +46,8 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.hakuna7.NEXUS.Broadcast
         PRODUCT_NAME: NEXUSBroadcast
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: BroadcastExtension/Info.plist
         SKIP_INSTALL: YES
         APPLICATION_EXTENSION_API_ONLY: YES
 schemes:
