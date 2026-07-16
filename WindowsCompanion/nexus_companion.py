@@ -15,9 +15,36 @@ import pyperclip
 
 HTTP_PORT = 8766
 UDP_PORT = 8767
-PAIRING_TOKEN = os.environ.get("NEXUS_TOKEN") or f"{secrets.randbelow(1_000_000):06d}"
 pyautogui.FAILSAFE = False
 status_callback = None
+
+
+def load_or_create_pairing_token():
+    configured = os.environ.get("NEXUS_TOKEN", "").strip()
+    if configured:
+        return configured
+
+    app_data = os.environ.get("LOCALAPPDATA") or os.path.expanduser("~")
+    token_path = os.path.join(app_data, "NEXUS", "pairing-token.txt")
+    try:
+        with open(token_path, "r", encoding="ascii") as token_file:
+            saved = token_file.read().strip()
+        if len(saved) == 6 and saved.isdigit():
+            return saved
+    except OSError:
+        pass
+
+    token = f"{secrets.randbelow(1_000_000):06d}"
+    try:
+        os.makedirs(os.path.dirname(token_path), exist_ok=True)
+        with open(token_path, "w", encoding="ascii") as token_file:
+            token_file.write(token)
+    except OSError:
+        pass
+    return token
+
+
+PAIRING_TOKEN = load_or_create_pairing_token()
 
 
 def local_ip():
