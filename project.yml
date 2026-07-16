@@ -21,6 +21,22 @@ targets:
       - NEXUS
     info:
       path: NEXUS/Info.plist
+      properties:
+        CFBundleDisplayName: NEXUS
+        LSRequiresIPhoneOS: true
+        NSCameraUsageDescription: "用于 AR 视觉扫描、文字识别和隐私打码。"
+        NSPhotoLibraryUsageDescription: "用于选择需要隐私打码的图片。"
+        NSPhotoLibraryAddUsageDescription: "用于保存完成隐私打码的图片。"
+        NSLocalNetworkUsageDescription: "用于连接你自己的 Windows 电脑并发送遥控指令。"
+        NSBonjourServices:
+          - _nexus-remote._tcp
+        UIBackgroundModes:
+          - audio
+          - voip
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.hakuna7.NEXUS
@@ -42,6 +58,13 @@ targets:
       - BroadcastExtension
     info:
       path: BroadcastExtension/Info.plist
+      properties:
+        CFBundleDisplayName: "NEXUS 屏幕识别"
+        NSExtension:
+          NSExtensionAttributes:
+            RPBroadcastProcessMode: RPBroadcastProcessModeSampleBuffer
+          NSExtensionPointIdentifier: com.apple.broadcast-services-upload
+          NSExtensionPrincipalClass: "$(PRODUCT_MODULE_NAME).SampleHandler"
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.hakuna7.NEXUS.Broadcast
