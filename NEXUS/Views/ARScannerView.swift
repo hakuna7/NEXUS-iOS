@@ -12,6 +12,7 @@ final class ARScanModel: ObservableObject {
 }
 
 struct ARScannerScreen: View {
+    @EnvironmentObject private var state: AppState
     @StateObject private var model = ARScanModel()
 
     var body: some View {
