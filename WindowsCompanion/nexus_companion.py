@@ -3,6 +3,7 @@ import json
 import os
 import secrets
 import socket
+import subprocess
 import threading
 import tkinter as tk
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -20,6 +21,58 @@ status_callback = None
 
 
 def local_ip():
+    candidates = []
+    try:
+        result = subprocess.run(
+            [
+                "powershell.exe",
+                "-NoProfile",
+                "-Command",
+                "Get-NetIPAddress -AddressFamily IPv4 | "
+                "Where-Object { $_.AddressState -eq 'Preferred' } | "
+                "ForEach-Object IPAddress",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=5,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+        )
+        candidates.extend(
+            address.strip()
+            for address in result.stdout.splitlines()
+            if address.strip()
+        )
+    except (OSError, subprocess.SubprocessError):
+        pass
+
+    try:
+        for info in socket.getaddrinfo(socket.gethostname(), None, socket.AF_INET):
+            address = info[4][0]
+            if address not in candidates:
+                candidates.append(address)
+    except OSError:
+        pass
+
+    def priority(address):
+        parts = address.split(".")
+        if len(parts) != 4:
+            return 99
+        octets = tuple(int(part) for part in parts)
+        if octets[:2] == (192, 168):
+            return 0
+        if octets[0] == 10:
+            return 1
+        if octets[0] == 172 and 16 <= octets[1] <= 31:
+            return 2
+        return 99
+
+    private_addresses = sorted(
+        (address for address in candidates if priority(address) < 99),
+        key=priority,
+    )
+    if private_addresses:
+        return private_addresses[0]
+
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
         sock.connect(("8.8.8.8", 80))
