@@ -117,6 +117,20 @@ private struct NexusBackButtonModifier: ViewModifier {
     }
 }
 
+private struct NexusHomeButtonModifier: ViewModifier {
+    let action: () -> Void
+
+    func body(content: Content) -> some View {
+        content.toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: action) {
+                    Label("返回", systemImage: "chevron.left")
+                }
+            }
+        }
+    }
+}
+
 extension View {
     func nexusScreen() -> some View {
         self
@@ -127,5 +141,9 @@ extension View {
 
     func nexusBackButton() -> some View {
         modifier(NexusBackButtonModifier())
+    }
+
+    func nexusHomeButton(action: @escaping () -> Void) -> some View {
+        modifier(NexusHomeButtonModifier(action: action))
     }
 }

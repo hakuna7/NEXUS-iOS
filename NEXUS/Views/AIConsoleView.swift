@@ -12,6 +12,7 @@ struct AIConsoleView: View {
         }
         .navigationTitle("AI 控制台")
         .navigationBarTitleDisplayMode(.inline)
+        .nexusHomeButton { state.selectedTab = .home }
         .nexusScreen()
     }
 

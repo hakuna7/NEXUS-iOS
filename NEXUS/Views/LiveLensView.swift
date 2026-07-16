@@ -16,6 +16,7 @@ struct LiveLensView: View {
         }
         .navigationTitle("实时看屏")
         .navigationBarTitleDisplayMode(.large)
+        .nexusHomeButton { state.selectedTab = .home }
         .onChange(of: state.screenMode) { _, mode in
             state.overlayState.title = "NEXUS · \(mode.title)"
         }

@@ -22,6 +22,7 @@ struct ARScannerScreen: View {
         }
         .navigationTitle("AR 视觉扫描")
         .navigationBarTitleDisplayMode(.inline)
+        .nexusHomeButton { state.selectedTab = .home }
         .background(Color.black)
     }
 

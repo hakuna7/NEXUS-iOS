@@ -26,6 +26,8 @@ struct MoreView: View {
         }
         .scrollContentBackground(.hidden)
         .navigationTitle("更多能力")
+        .navigationBarTitleDisplayMode(.inline)
+        .nexusHomeButton { state.selectedTab = .home }
         .nexusScreen()
     }
 }
