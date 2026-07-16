@@ -57,6 +57,7 @@ struct SettingsView: View {
         .scrollContentBackground(.hidden)
         .navigationTitle("模型与偏好")
         .navigationBarTitleDisplayMode(.inline)
+        .nexusBackButton()
         .nexusScreen()
     }
 }

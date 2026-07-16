@@ -54,6 +54,8 @@ struct MemoryView: View {
         .searchable(text: $search, prompt: "搜索看过的文字")
         .scrollContentBackground(.hidden)
         .navigationTitle("屏幕记忆")
+        .navigationBarTitleDisplayMode(.inline)
+        .nexusBackButton()
         .nexusScreen()
         .confirmationDialog("确定清除全部屏幕记忆？", isPresented: $showClear) {
             Button("清除", role: .destructive) { Task { await state.clearMemory() } }
@@ -85,6 +87,7 @@ private struct MemoryDetailView: View {
         }
         .navigationTitle(item.createdAt.formatted(date: .abbreviated, time: .shortened))
         .navigationBarTitleDisplayMode(.inline)
+        .nexusBackButton()
         .nexusScreen()
     }
 }

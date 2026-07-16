@@ -99,11 +99,33 @@ struct SectionHeader: View {
     }
 }
 
+private struct NexusBackButtonModifier: ViewModifier {
+    @Environment(\.dismiss) private var dismiss
+
+    func body(content: Content) -> some View {
+        content
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Label("返回", systemImage: "chevron.left")
+                    }
+                }
+            }
+    }
+}
+
 extension View {
     func nexusScreen() -> some View {
         self
             .foregroundStyle(Color.white)
             .background(NexusTheme.background.ignoresSafeArea())
             .tint(NexusTheme.primary)
+    }
+
+    func nexusBackButton() -> some View {
+        modifier(NexusBackButtonModifier())
     }
 }

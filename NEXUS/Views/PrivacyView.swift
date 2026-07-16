@@ -62,6 +62,7 @@ struct PrivacyView: View {
         }
         .navigationTitle("隐私打码")
         .navigationBarTitleDisplayMode(.inline)
+        .nexusBackButton()
         .nexusScreen()
         .onChange(of: pickerItem) { _, item in
             Task {

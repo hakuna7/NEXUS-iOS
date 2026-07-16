@@ -17,6 +17,7 @@ struct RemoteView: View {
         }
         .navigationTitle("空间遥控")
         .navigationBarTitleDisplayMode(.inline)
+        .nexusBackButton()
         .nexusScreen()
     }
 
